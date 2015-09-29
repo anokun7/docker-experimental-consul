@@ -1,5 +1,9 @@
+unset DOCKER_HOST
+# sudo service docker restart ; sleep 2 
+# docker rm -f $(docker ps -qa) && docker rmi $(docker images -q)
 export id=$(docker run --rm swarm create)
 for i in {4..7}; do docker run -d --name node$i swarm join --addr 10.10.0.$i:2375 token://$id; done
 docker run -d -p 9999:2375 --name master swarm manage token://$id
 export DOCKER_HOST=tcp://10.10.0.4:9999
-docker info
+sleep 3
+docker info ; sleep 4 ; watch docker ps
